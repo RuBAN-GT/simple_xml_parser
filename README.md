@@ -1,5 +1,7 @@
 # SimpleXmlParser
 
+![Hex.pm](https://img.shields.io/hexpm/v/simple_xml_parser)
+
 The package can help to parse complex xml structures into internal Elixir data types.
 
 ## Examples

@@ -35,10 +35,11 @@ defmodule SimpleXmlParser.MixProject do
       maintainers: ["Dmitry Ruban"],
       licenses: ["MIT"],
       links: %{
-        GitHub: "https://github.com/RuBAN-GT/simple_xml_parser",
-        source_url: "https://github.com/RuBAN-GT/simple_xml_parser",
-        homepage_url: "https://github.com/RuBAN-GT/simple_xml_parser"
-      }
+        GitHub: "https://github.com/RuBAN-GT/simple_xml_parser"
+      },
+      source_url: "https://github.com/RuBAN-GT/simple_xml_parser",
+      homepage_url: "https://github.com/RuBAN-GT/simple_xml_parser",
+      files: ~w(lib .formatter.exs mix.exs README.md)
     ]
   end
 
