@@ -23,6 +23,7 @@ defmodule SimpleXmlParser.MixProject do
   defp deps do
     [
       {:erlsom, "~> 1.5"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:faker, "~> 0.12", only: :test},
       {:stream_data, "~> 0.1", only: :test},
       {:xml_builder, "~> 2.1.1", only: :test}
