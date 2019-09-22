@@ -1,0 +1,14 @@
+# Elixir project
+/_build/
+/.elixir_ls/
+/cover/
+/deps/
+/doc/
+/.fetch
+erl_crash.dump
+*.ez
+simple_xml_parser-*.tar
+
+# Common
+.idea
+.vscode

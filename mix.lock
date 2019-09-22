@@ -1,0 +1,6 @@
+%{
+  "erlsom": {:hex, :erlsom, "1.5.0", "c5a5cdd0ee0e8dca62bcc4b13ff08da24fdefc16ccd8b25282a2fda2ba1be24a", [:rebar3], [], "hexpm"},
+  "faker": {:hex, :faker, "0.12.0", "796cbac868c86c2df6f273ea4cdf2e271860863820e479e04a374b7ee6c376b6", [:mix], [], "hexpm"},
+  "stream_data": {:hex, :stream_data, "0.4.3", "62aafd870caff0849a5057a7ec270fad0eb86889f4d433b937d996de99e3db25", [:mix], [], "hexpm"},
+  "xml_builder": {:hex, :xml_builder, "2.1.1", "2d6d665f09cf1319e3e1c46035755271b414d99ad8615d0bd6f337623e0c885b", [:mix], [], "hexpm"},
+}
