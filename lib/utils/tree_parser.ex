@@ -4,9 +4,11 @@ defmodule SimpleXmlParser.Utils.TreeParser do
   """
 
   @doc ~S"""
-  Convert the input list from PureXmlParser to a map
+  Convert the input tuple or tuple list from PureXmlParser to a map
 
   ## Examples
+
+  ### Tuple
 
       Parse an empty object
       iex> SimpleXmlParser.Utils.TreeParser.to_map({:return, [], []})
@@ -26,10 +28,25 @@ defmodule SimpleXmlParser.Utils.TreeParser do
 
       iex> SimpleXmlParser.Utils.TreeParser.to_map({:return, [{:childs, [{:child, "1", []}, {:child, "2", []}], []}], []})
       %{return: %{childs: %{child: ["1", "2"]}}}
+
+  ### List
+
+      Parse an empty list
+      iex> SimpleXmlParser.Utils.TreeParser.to_map([])
+      []
+
+      Parse a simple list
+      iex> SimpleXmlParser.Utils.TreeParser.to_map([{:return, "Hello world", []}])
+      [%{return: "Hello world"}]
   """
-  @spec to_map(Tuple.t()) :: Map.t()
-  def to_map(tuple) do
-    set_node_map tuple, initial_map()
+  @spec to_map(list(tuple)) :: list(map())
+  def to_map(input) when is_list(input) do
+    Enum.map(input, &to_map/1)
+  end
+
+  @spec to_map(tuple()) :: map()
+  def to_map(input) do
+    set_node_map input, initial_map()
   end
 
   defp initial_map(), do: %{}

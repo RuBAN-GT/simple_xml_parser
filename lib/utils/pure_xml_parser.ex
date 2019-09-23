@@ -6,7 +6,7 @@ defmodule SimpleXmlParser.Utils.PureXmlParser do
   @typedoc """
   A node object from parser, contains: node name, content, attributes.
   """
-  @type xml_node() :: {Atom.t(), List.t() | String.t(), List.t()}
+  @type xml_node() :: {atom(), list(any) | String.t(), list({atom(), String.t()})}
 
   @doc ~S"""
   Generate a structure that preserve xml hierarchy and help to parse it to another types
@@ -37,6 +37,49 @@ defmodule SimpleXmlParser.Utils.PureXmlParser do
     |> get_sax_response()
   end
 
+  @doc ~S"""
+  Similar behaviour with original `parse` with the exception of
+  parsing from a special node
+
+  ## Examples
+
+      Returns nil for undefined node
+      iex> SimpleXmlParser.Utils.PureXmlParser.parse("<return>Hi</return>", :example)
+      nil
+
+      Parse a primitive object from `:example`:
+      iex> "<return><example>Hello!</example></return>"
+      ...> |> SimpleXmlParser.Utils.PureXmlParser.parse(:example)
+      {:example, "Hello!", []}
+
+      Parse a list from `:example`:
+      iex> "<return><example>1</example><example>2</example></return>"
+      ...> |> SimpleXmlParser.Utils.PureXmlParser.parse(:example)
+      [{:example, "1", []}, {:example, "2", []}]
+  """
+  @spec parse(String.t(), atom()) :: xml_node() | nil
+  def parse(xml_string, start_node) do
+    char_name = to_charlist start_node
+
+    xml_string
+    |> :erlsom.parse_sax(nil, fn (info, acc) -> sax_group_handler(info, acc, char_name) end)
+    |> get_sax_response()
+  end
+
+  # Parse a selected node from sax context
+  defp sax_group_handler(info, nil, node_name) do
+    case info do
+      {:startElement, _, ^node_name, _, _} -> sax_handler(info, [{:fake_root, [], []}])
+      _ -> nil
+    end
+  end
+
+  defp sax_group_handler(:endDocument, [{:fake_root, [node], _}], _), do: node
+  defp sax_group_handler(:endDocument, [{:fake_root, nodes, _}], _), do: nodes
+
+  defp sax_group_handler(info, acc, _), do: sax_handler(info, acc)
+
+  # Put a primitive value into tuple
   defp sax_handler({:characters, value}, [{name, _, attrs} | tail]) do
     [{name, to_string(value), attrs} | tail]
   end
@@ -53,7 +96,7 @@ defmodule SimpleXmlParser.Utils.PureXmlParser do
   end
 
   # Set a root element as root tuple
-  defp sax_handler({:endElement, _, _, _}, [response]), do: response
+  defp sax_handler(:endDocument, [response]), do: response
 
   # Start a document with the working stack
   defp sax_handler(:startDocument, _), do: []

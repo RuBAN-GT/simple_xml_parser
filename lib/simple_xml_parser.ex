@@ -3,8 +3,7 @@ defmodule SimpleXmlParser do
   The simple parser of xml string to different types
   """
 
-  alias SimpleXmlParser.Utils.PureXmlParser
-  alias SimpleXmlParser.Utils.TreeParser
+  alias SimpleXmlParser.Utils.{PureXmlParser, TreeParser}
 
   @doc """
   Convert the input xml string to a map ignoring attributes
@@ -19,6 +18,7 @@ defmodule SimpleXmlParser do
       iex> SimpleXmlParser.xml_to_map("<return><item>1</item><item>2</item></return>")
       %{return: %{item: ["1", "2"]}}
   """
+  @spec xml_to_map(String.t()) :: map()
   def xml_to_map(input) do
     input
     |> PureXmlParser.parse()
